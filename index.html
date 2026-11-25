@@ -58,6 +58,38 @@ button.chk:disabled{opacity:.6;cursor:wait}
 .sp-all{margin-top:6px}
 .lbl .btns{display:flex;gap:6px}
 button.lum{padding:2px 9px;font-size:11px;background:#fff;color:var(--purple,#7c5cd8);border-color:#7c5cd8}
+.mbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.mbar b{font-size:15px;color:var(--navy);flex:1;min-width:200px}
+.mbar input.txt{min-width:260px}
+.mhide{font-size:12px;display:flex;gap:4px;align-items:center;margin:0;text-transform:none;letter-spacing:0;color:var(--mut);font-weight:400}
+.mboard{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:12px;overflow-x:auto;align-items:start}
+.mcol{background:#eef1f5;border-radius:8px;padding:8px}
+.mcol h4{font-size:13px;color:var(--navy);margin:2px 4px 8px;display:flex;justify-content:space-between}
+.mcol h4 i{font-style:normal;color:var(--mut);font-weight:400}
+.mempty{color:#8d949c;text-align:center;font-size:12px}
+.mcard{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:10px;margin-bottom:8px}
+.mname{font-weight:600;margin-bottom:4px;word-break:break-word}
+.mmeta{font-size:11px;color:var(--mut);margin-bottom:6px}
+.mtag{background:#e8f0fe;color:var(--blue);border-radius:4px;padding:1px 6px;margin-right:6px}
+.mcard select{width:100%;margin-bottom:6px}
+.mcard textarea{min-height:44px}
+.mcard .saved{display:block;text-align:right;min-height:14px}
+.badge{background:var(--red);color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-left:4px}
+.kpi.red b{color:var(--red)}.kpi.amb b{color:#b7791f}.kpi.grn b{color:var(--green)}
+.malerts{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+.malerts h4{font-size:14px;color:var(--navy);margin-bottom:8px}
+.ma{border-left:4px solid var(--bd);padding:4px 10px;margin-bottom:8px}
+.ma.red{border-left-color:var(--red)}.ma.amb{border-left-color:var(--amber)}.ma.gry{border-left-color:#8d949c}.ma.grn{border-left-color:var(--green)}.ma small{color:var(--mut)}
+.ma h5{font-size:12px;margin-bottom:2px}
+.ma ul{margin-left:18px;font-size:13px}
+.mok{color:var(--green);font-weight:600}
+.mhint{color:var(--mut);font-size:12px;margin-top:6px}
+.mwed{background:#fff8e1;border:1px solid #f5dfa0;border-radius:6px;padding:8px 10px;margin-bottom:10px;font-weight:600;color:#7a5a00}
+.mhist{margin-top:6px;font-size:12px}
+.mh{border-top:1px solid var(--bd);padding:4px 0;white-space:pre-wrap;word-break:break-word;color:var(--mut)}
+.mh b{color:var(--tx)}
+.mcard.over{border-left:4px solid var(--red)}.mcard.soon{border-left:4px solid var(--amber)}
+
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;max-width:560px;z-index:50}
 /* Configuración */
 #cfg{max-width:520px;margin:60px auto;background:#fff;border:1px solid var(--bd);border-radius:10px;padding:24px}
@@ -103,6 +135,7 @@ button.lum{padding:2px 9px;font-size:11px;background:#fff;color:var(--purple,#7c
   <select id="f-mes" title="Mes"></select>
   <button class="tab on" data-v="edit" data-i18n="tab_edit">Captura</button>
   <button class="tab" data-v="slide" data-i18n="tab_slide">Diapositiva gerencial</button>
+  <button class="tab" data-v="meet"><span data-i18n="tab_meet">Reuniones</span> <b id="m-badge" class="badge hide"></b></button>
   <button class="sec" id="b-refresh" data-i18n="refresh">Actualizar</button>
   <button class="sec" id="b-cfg" data-i18n="settings">Configuración</button>
   <button class="sec" id="b-lang" title="Español / English">EN</button>
@@ -118,22 +151,38 @@ button.lum{padding:2px 9px;font-size:11px;background:#fff;color:var(--purple,#7c
     <p data-i18n="cfg_p">Usa tu token personal de Monday (Avatar → Developers → My access tokens). Se guarda solo en este navegador y respeta tus permisos sobre el tablero.</p>
     <input class="txt" id="c-token" type="password" placeholder="Token de Monday" data-i18n-ph="cfg_token">
     <input class="txt" id="c-board" placeholder="Board ID" value="18439845138">
+    <input class="txt" id="c-meet" placeholder="Board ID de Reuniones (Managers Meeting)" data-i18n-ph="cfg_meet">
     <input class="txt" id="c-lt" placeholder="URL del corrector (LanguageTool)" data-i18n-ph="cfg_lt">
     <label for="c-ai" class="lbl" data-i18n="cfg_ai">Asistente de redacción</label>
     <select id="c-ai" class="txt">
       <option value="copy" data-i18n="ai_copy">Solo copiar el prompt (sin abrir ninguna página)</option>
-      <option value="lumini" data-i18n="ai_lumini">Lumini (IBM Consulting Advantage)</option>
+      <option value="ica" data-i18n="ai_ica">Asistente de redacción ICA (IBM)</option>
       <option value="copilot" data-i18n="ai_copilot">Microsoft Copilot</option>
       <option value="custom" data-i18n="ai_custom">Otro enlace (URL propia)</option>
     </select>
     <input class="txt" id="c-ai-url" placeholder="URL de tu asistente" data-i18n-ph="cfg_ai_url">
-    <input class="txt" id="c-lum" placeholder="URL del agente redactor (Lumini en ICA)" data-i18n-ph="cfg_lum">
     <button id="c-save" data-i18n="cfg_save">Guardar y conectar</button>
   </section>
 
   <section id="v-edit" class="hide">
     <div class="kpis" id="kpis"></div>
     <div id="groups"></div>
+  </section>
+
+  <section id="v-meet" class="hide">
+    <div class="mbar noprint">
+      <b id="m-name"></b>
+      <label class="mhide"><input type="checkbox" id="m-hide" checked> <span data-i18n="m_hide">Ocultar los hechos</span></label>
+      <input class="txt" id="m-new" placeholder="Nuevo tema, acuerdo o pendiente" data-i18n-ph="m_new" maxlength="200">
+      <button id="m-add" data-i18n="m_add">Agregar</button>
+      <button class="sec" id="m-copy" data-i18n="m_copy">Copiar resumen</button>
+      <button class="sec" id="m-ics" data-i18n="m_ics">Recordatorio semanal</button>
+      <button id="m-close" data-i18n="m_close">Cerrar reunión</button>
+    </div>
+    <div class="kpis" id="m-kpis"></div>
+    <div class="malerts" id="m-alerts"></div>
+    <div class="malerts" id="m-prev"></div>
+    <div id="m-board" class="mboard"></div>
   </section>
 
   <section id="v-slide" class="hide">
@@ -168,6 +217,26 @@ const MESES_EN = ["January","February","March","April","May","June","July","Augu
 // solo para mostrarlo (Translator API del navegador); nunca se guarda en Monday.
 const I18N = {
   es: { tab_edit: "Captura", tab_slide: "Diapositiva gerencial", refresh: "Actualizar", settings: "Configuración",
+        tab_meet: "Reuniones", m_hide: "Ocultar los hechos", m_new: "Nuevo tema, acuerdo o pendiente", m_add: "Agregar",
+        m_open: "abiertos", m_none: "Sin estado", m_state: "Estado", m_notes: "Minuta / notas",
+        m_noboard: "Tablero de reuniones no encontrado o sin acceso.", cfg_meet: "Board ID de Reuniones (Managers Meeting)",
+        m_k_open: "Abiertos", m_k_over: "Vencidos", m_k_soon: "Próx. 7 días", m_k_stuck: "Bloqueados", m_k_noown: "Sin responsable", m_k_done: "Hechos",
+        m_alerts: "Para recordar en la próxima reunión", m_ok: "Sin alertas: todo al día ✓",
+        m_a_over: "Vencidos", m_a_soon: "Vencen en los próximos 7 días", m_a_stuck: "Bloqueados", m_a_noown: "Sin responsable",
+        m_a_nodate: "Sin fecha compromiso", m_a_stale: "Sin movimiento en más de 14 días",
+        m_late: "hace {n} d", m_in: "en {n} d", m_today: "hoy", m_more: "y {n} más",
+        m_setup_h: "Faltan columnas en el tablero de Monday: {c}. Sin ellas no se puede escribir la minuta ni hay alertas de vencimiento.", m_setup_b: "Crear columnas en Monday",
+        m_setup_c: "Se crearán en el tablero de Monday las columnas: {c}. ¿Continuar?", m_col_date: "Fecha compromiso", m_col_notes: "Minuta",
+        m_copy: "Copiar resumen", m_copied: "Resumen copiado. Pégalo en el correo o en la invitación de la reunión.", m_sum_h: "Resumen para la próxima reunión",
+        m_prev: "Reunión anterior", m_prev_still: "Siguen pendientes", m_prev_solved: "Resueltos desde entonces", m_prev_new: "Nuevos desde entonces",
+        m_prev_none: "Aún no hay reuniones cerradas. Al terminar cada reunión pulsa «Cerrar reunión»: lo pendiente se guarda en Monday y aquí aparecerá en la siguiente.",
+        m_prev_err: "No se pudo leer el historial de Monday. Pulsa Actualizar para reintentar.",
+        m_close: "Cerrar reunión", m_close_c: "Se agregará en Monday una nota con el estado actual a cada pendiente abierto ({n}), para dejar el historial de esta reunión. ¿Cerrar la reunión?",
+        m_close_ok: "Reunión cerrada: {n} pendientes quedaron registrados en el historial.", m_close_none: "No hay pendientes abiertos que registrar.",
+        m_note_h: "Reunión", m_due: "compromiso", m_hist: "Historial", m_hist_load: "Cargando…", m_hist_none: "Sin historial todavía. Se crea al cerrar cada reunión.",
+        m_wed: "Hoy es miércoles de reunión: tienes {n} pendientes abiertos. Revísalos antes de empezar.",
+        m_ics: "Recordatorio semanal", m_ics_ok: "Descargado. Ábrelo para agregar a tu calendario el recordatorio de cada miércoles a las 10:00 (puedes cambiar la hora allí).",
+        m_ics_title: "Reunión de managers: revisar pendientes", m_ics_desc: "Abre el dashboard BMR → Reuniones para ver los pendientes y las alertas.",
         cfg_h: "Conexión con Monday", cfg_token: "Token de Monday", cfg_save: "Guardar y conectar",
         cfg_p: "Usa tu token personal de Monday (Avatar → Developers → My access tokens). Se guarda solo en este navegador y respeta tus permisos sobre el tablero.",
         pptx: "Descargar PowerPoint", print: "Imprimir / PDF",
@@ -185,13 +254,33 @@ const I18N = {
         cfg_lt: "URL del corrector (LanguageTool)", sp_btn: "✓ Revisar redacción", sp_run: "Revisando…", sp_ok: "Sin errores de ortografía ni gramática ✓",
         sp_apply: "Aplicar", sp_all: "Aplicar todas las sugerencias", sp_err: "No se pudo revisar: ", sp_empty: "Escribe algo para revisar.",
         sp_consent: "Para revisar la redacción, el texto de este campo se enviará al servicio LanguageTool (configurable en Configuración). No incluyas información confidencial. ¿Continuar?",
-        cfg_lum: "URL del agente redactor (Lumini en ICA)", lum_btn: "✨ Redactar con IA", lum_empty: "Escribe primero unas notas en el campo para que la IA las redacte.",
+        lum_btn: "✨ Redactar con IA", ica_btn: "✨ Redactar con ICA", lum_empty: "Escribe primero unas notas en el campo para que la IA las redacte.",
         lum_ok: "Prompt copiado. Pégalo con Ctrl+V en tu asistente de IA, copia la respuesta y pégala aquí en el campo.",
         lum_manual: "No se pudo copiar automáticamente. Selecciona el texto del campo, cópialo y pégalo en tu asistente de IA.",
         cfg_ai: "Asistente de redacción", cfg_ai_url: "URL de tu asistente",
-        ai_copy: "Solo copiar el prompt (sin abrir ninguna página)", ai_lumini: "Lumini (IBM Consulting Advantage)",
+        ai_copy: "Solo copiar el prompt (sin abrir ninguna página)", ai_ica: "Asistente de redacción ICA (IBM)",
         ai_copilot: "Microsoft Copilot", ai_custom: "Otro enlace (URL propia)" },
   en: { tab_edit: "Input", tab_slide: "Executive slide", refresh: "Refresh", settings: "Settings",
+        tab_meet: "Meetings", m_hide: "Hide done items", m_new: "New topic, agreement or action item", m_add: "Add",
+        m_open: "open", m_none: "No status", m_state: "Status", m_notes: "Minutes / notes",
+        m_noboard: "Meetings board not found or no access.", cfg_meet: "Meetings Board ID (Managers Meeting)",
+        m_k_open: "Open", m_k_over: "Overdue", m_k_soon: "Next 7 days", m_k_stuck: "Blocked", m_k_noown: "No owner", m_k_done: "Done",
+        m_alerts: "To remind at the next meeting", m_ok: "No alerts: all up to date ✓",
+        m_a_over: "Overdue", m_a_soon: "Due in the next 7 days", m_a_stuck: "Blocked", m_a_noown: "No owner",
+        m_a_nodate: "No due date", m_a_stale: "No activity for over 14 days",
+        m_late: "{n} d late", m_in: "in {n} d", m_today: "today", m_more: "and {n} more",
+        m_setup_h: "The Monday board is missing columns: {c}. Without them you cannot write minutes and there are no due-date alerts.", m_setup_b: "Create columns in Monday",
+        m_setup_c: "These columns will be created on the Monday board: {c}. Continue?", m_col_date: "Due date", m_col_notes: "Minutes",
+        m_copy: "Copy summary", m_copied: "Summary copied. Paste it in the email or meeting invite.", m_sum_h: "Summary for the next meeting",
+        m_prev: "Previous meeting", m_prev_still: "Still pending", m_prev_solved: "Resolved since then", m_prev_new: "New since then",
+        m_prev_none: "No closed meetings yet. When each meeting ends press “Close meeting”: open items are saved in Monday and will show up here next time.",
+        m_prev_err: "Could not read the history from Monday. Press Refresh to retry.",
+        m_close: "Close meeting", m_close_c: "A note with the current status will be added in Monday to each open item ({n}) to keep this meeting's history. Close the meeting?",
+        m_close_ok: "Meeting closed: {n} open items were recorded in the history.", m_close_none: "There are no open items to record.",
+        m_note_h: "Meeting", m_due: "due", m_hist: "History", m_hist_load: "Loading…", m_hist_none: "No history yet. It is created when each meeting is closed.",
+        m_wed: "Today is meeting Wednesday: you have {n} open items. Review them before starting.",
+        m_ics: "Weekly reminder", m_ics_ok: "Downloaded. Open it to add the every-Wednesday 10:00 reminder to your calendar (you can change the time there).",
+        m_ics_title: "Managers meeting: review pending items", m_ics_desc: "Open the BMR dashboard → Meetings to see pending items and alerts.",
         cfg_h: "Monday connection", cfg_token: "Monday token", cfg_save: "Save and connect",
         cfg_p: "Use your personal Monday token (Avatar → Developers → My access tokens). It is stored only in this browser and respects your permissions on the board.",
         pptx: "Download PowerPoint", print: "Print / PDF",
@@ -209,11 +298,11 @@ const I18N = {
         cfg_lt: "Proofreader URL (LanguageTool)", sp_btn: "✓ Check writing", sp_run: "Checking…", sp_ok: "No spelling or grammar errors ✓",
         sp_apply: "Apply", sp_all: "Apply all suggestions", sp_err: "Could not check: ", sp_empty: "Type something to check.",
         sp_consent: "To check the writing, this field's text will be sent to the LanguageTool service (configurable in Settings). Do not include confidential information. Continue?",
-        cfg_lum: "Writing agent URL (Lumini in ICA)", lum_btn: "✨ Write with AI", lum_empty: "First type some notes in the field so the AI can write them up.",
+        lum_btn: "✨ Write with AI", ica_btn: "✨ Write with ICA", lum_empty: "First type some notes in the field so the AI can write them up.",
         lum_ok: "Prompt copied. Paste it with Ctrl+V in your AI assistant, copy the answer and paste it back into this field.",
         lum_manual: "Could not copy automatically. Select the field text, copy it and paste it into your AI assistant.",
         cfg_ai: "Writing assistant", cfg_ai_url: "Your assistant URL",
-        ai_copy: "Copy the prompt only (do not open any page)", ai_lumini: "Lumini (IBM Consulting Advantage)",
+        ai_copy: "Copy the prompt only (do not open any page)", ai_ica: "ICA writing assistant (IBM)",
         ai_copilot: "Microsoft Copilot", ai_custom: "Other link (your own URL)" }
 };
 let LANG = localStorage.getItem("bmr_lang") === "en" ? "en" : "es";
@@ -362,11 +451,11 @@ const paintStatus = () => $("status-line").textContent = lastStatus ? t(lastStat
 const setStatus = k => { lastStatus = { k, h: hora() }; paintStatus(); };
 
 function showConfig() {
-  ["v-edit", "v-slide"].forEach(i => $(i).classList.add("hide"));
+  ["v-edit", "v-slide", "v-meet"].forEach(i => $(i).classList.add("hide"));
   $("cfg").classList.remove("hide");
   $("c-board").value = boardId();
+  $("c-meet").value = localStorage.getItem("bmr_meet") || "";
   $("c-lt").value = localStorage.getItem("bmr_lt") || "";
-  $("c-lum").value = localStorage.getItem("bmr_lum") || "";
   $("c-ai").value = aiChoice();
   $("c-ai-url").value = localStorage.getItem("bmr_ai_url") || "";
   syncAiFields();
@@ -374,7 +463,6 @@ function showConfig() {
 function syncAiFields() {
   const v = $("c-ai").value;
   $("c-ai-url").classList.toggle("hide", v !== "custom");
-  $("c-lum").classList.toggle("hide", v !== "lumini");
 }
 
 // ── Filtro de mes ────────────────────────────────────────────────────────────
@@ -394,7 +482,320 @@ function render() {
   $("cfg").classList.add("hide");
   $("v-edit").classList.toggle("hide", view !== "edit");
   $("v-slide").classList.toggle("hide", view !== "slide");
-  if (view === "edit") renderEdit(); else renderSlide();
+  $("v-meet").classList.toggle("hide", view !== "meet");
+  $("f-mes").classList.toggle("hide", view === "meet");
+  if (view === "edit") renderEdit();
+  else if (view === "slide") renderSlide();
+  else meetLoad(false);
+}
+
+// ── Reuniones (tablero "Managers Meeting", vista Kanban) ─────────────────────
+// Lee y escribe en un segundo tablero de Monday. Los elementos no se borran: se mueven de estado.
+const MEET_DEFAULT = "18441411063";
+const meetId = () => (localStorage.getItem("bmr_meet") || "").trim() || MEET_DEFAULT;
+const meet = { name: "", cols: {}, labels: [], items: [], sig: "", loaded: false, hist: {}, histLoaded: false, histErr: false };
+const MEET_COLS = { status: "status", date: "date", person: "person", notes: "long_text", tipo: "dropdown" };
+
+async function meetLoad(silent) {
+  if (!token()) { showConfig(); return; }
+  try {
+    const data = await gql(`query($id:[ID!]){boards(ids:$id){name
+      columns{id title type settings_str}
+      items_page(limit:500){items{id name updated_at column_values{id text type value}}}}}`, { id: [meetId()] });
+    const b = data.boards && data.boards[0];
+    if (!b) throw new Error(t("m_noboard"));
+    const cols = {};
+    b.columns.forEach(c => { // la primera columna de cada tipo es la que se usa
+      Object.keys(MEET_COLS).forEach(k => { if (!cols[k] && c.type === MEET_COLS[k]) cols[k] = c.id; });
+    });
+    const pref = b.columns.find(c => c.type === "date" && /compromiso|due|l[ií]mite|vence|deadline|entrega/i.test(c.title || ""));
+    if (pref) cols.date = pref.id;
+    let labels = [];
+    if (cols.status) {
+      const st = b.columns.find(c => c.id === cols.status);
+      try {
+        const s = JSON.parse(st.settings_str || "{}").labels || {};
+        labels = Object.keys(s).map(i => s[i]).filter(Boolean);
+      } catch (e) { labels = []; }
+    }
+    const items = b.items_page.items.map(it => {
+      const g = id => (it.column_values.find(c => c.id === id) || {}).text || "";
+      return { id: it.id, name: it.name, upd: it.updated_at || "", status: g(cols.status), date: g(cols.date), person: g(cols.person), notes: g(cols.notes), tipo: g(cols.tipo) };
+    });
+    const sig = JSON.stringify([b.name, items]);
+    if (silent && sig === meet.sig) return;
+    Object.assign(meet, { name: b.name, cols, labels, items, sig, loaded: true });
+    if (view === "meet") showMsg("");
+    renderMeet();
+    if (!silent || !meet.histLoaded) meetHistLoad();
+  } catch (e) {
+    if (!silent) showMsg(t("e_read") + e.message);
+  }
+}
+
+function meetLabels() { // etiquetas del tablero; si no hay Status, se usan las que traen los elementos
+  const l = meet.labels.length ? meet.labels : [...new Set(meet.items.map(i => i.status).filter(Boolean))];
+  return l.length ? l : ["Working on it", "Stuck", "Done"];
+}
+const isDone = s => /^(done|hecho|listo|completad)/i.test(s || "");
+
+// ── Análisis ejecutivo y alertas para la próxima reunión ─────────────────────
+const todayMid = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+function meetDays(i) { // días hasta la fecha compromiso (negativo = vencido); null si no hay fecha
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(i.date || "");
+  return m ? Math.round((new Date(+m[1], +m[2] - 1, +m[3]) - todayMid()) / 864e5) : null;
+}
+const byDate = (a, b) => { const x = meetDays(a), y = meetDays(b); return (x === null) - (y === null) || (x || 0) - (y || 0); };
+const isStuck = s => /stuck|bloquead|atascad/i.test(s || "");
+function meetAnalysis() {
+  const open = meet.items.filter(i => !isDone(i.status));
+  const old = Date.now() - 14 * 864e5;
+  return {
+    open, done: meet.items.length - open.length,
+    over: open.filter(i => { const d = meetDays(i); return d !== null && d < 0; }),
+    soon: open.filter(i => { const d = meetDays(i); return d !== null && d >= 0 && d <= 7; }),
+    stuck: open.filter(i => isStuck(i.status)),
+    noOwner: open.filter(i => !i.person),
+    noDate: meet.cols.date ? open.filter(i => meetDays(i) === null) : [],
+    stale: open.filter(i => i.upd && new Date(i.upd).getTime() < old)
+  };
+}
+const ALERT_GROUPS = [["over", "m_a_over", "red"], ["soon", "m_a_soon", "amb"], ["stuck", "m_a_stuck", "red"],
+  ["noOwner", "m_a_noown", "amb"], ["noDate", "m_a_nodate", "gry"], ["stale", "m_a_stale", "gry"]];
+function meetLine(i) {
+  const d = meetDays(i);
+  const when = d === null ? "" : d < 0 ? t("m_late").replace("{n}", -d) : d === 0 ? t("m_today") : t("m_in").replace("{n}", d);
+  return [i.name, i.person, i.date && (i.date.slice(0, 10) + (when ? " (" + when + ")" : ""))].filter(Boolean).join(" · ");
+}
+const MEET_DAY = 3; // miércoles (0 = domingo)
+const wedBanner = a => new Date().getDay() === MEET_DAY && a.open.length ? `<p class="mwed">${t("m_wed").replace("{n}", a.open.length)}</p>` : "";
+function renderExec() {
+  const a = meetAnalysis();
+  $("m-kpis").innerHTML = [
+    [a.open.length, t("m_k_open"), ""],
+    [a.over.length, t("m_k_over"), a.over.length ? "red" : ""],
+    [a.soon.length, t("m_k_soon"), a.soon.length ? "amb" : ""],
+    [a.stuck.length, t("m_k_stuck"), a.stuck.length ? "red" : ""],
+    [a.noOwner.length, t("m_k_noown"), a.noOwner.length ? "amb" : ""],
+    [a.done, t("m_k_done"), "grn"]
+  ].map(k => `<div class="kpi ${k[2]}"><b>${k[0]}</b><span>${k[1]}</span></div>`).join("");
+  const groups = ALERT_GROUPS.filter(g => a[g[0]].length);
+  $("m-alerts").innerHTML = `<h4>${t("m_alerts")}</h4>` + wedBanner(a) +
+    (groups.length ? groups.map(g => {
+      const l = a[g[0]];
+      return `<div class="ma ${g[2]}"><h5>${t(g[1])} · ${l.length}</h5><ul>${l.slice(0, 8).map(i => `<li>${esc(meetLine(i))}</li>`).join("")}${l.length > 8 ? `<li>${t("m_more").replace("{n}", l.length - 8)}</li>` : ""}</ul></div>`;
+    }).join("") : `<p class="mok">${t("m_ok")}</p>`) +
+    (missingCols().length ? `<p class="mhint">${t("m_setup_h").replace("{c}", missingCols().map(c => t(c[2])).join(", "))} <button class="sec" id="m-setup">${t("m_setup_b")}</button></p>` : "");
+  const urgent = new Set([...a.over, ...a.soon, ...a.stuck]).size;
+  const bd = $("m-badge"); bd.textContent = urgent; bd.classList.toggle("hide", !urgent);
+}
+function meetSummary() {
+  const a = meetAnalysis();
+  const out = [t("m_sum_h") + " — " + meet.name + " — " + new Date().toLocaleDateString(LANG === "en" ? "en-US" : "es-CO"),
+    [["m_k_open", a.open], ["m_k_over", a.over], ["m_k_soon", a.soon], ["m_k_stuck", a.stuck]].map(k => t(k[0]) + ": " + k[1].length).join(" | ")];
+  ALERT_GROUPS.forEach(g => { if (a[g[0]].length) out.push("", t(g[1]) + " (" + a[g[0]].length + "):", ...a[g[0]].map(i => "- " + meetLine(i))); });
+  if (out.length === 2) out.push("", t("m_ok"));
+  const p = meet.histLoaded ? prevMeeting() : null;
+  if (p) {
+    out.push("", t("m_prev") + " " + p.date + ":");
+    if (p.still.length) out.push(t("m_prev_still") + " (" + p.still.length + "):", ...p.still.map(i => "- " + meetLine(i)));
+    if (p.solved.length) out.push(t("m_prev_solved") + " (" + p.solved.length + "): " + p.solved.map(i => i.name).join("; "));
+  }
+  return out.join("\n");
+}
+
+function renderMeet() {
+  if (!meet.loaded) return;
+  const hide = $("m-hide").checked;
+  const labels = meetLabels();
+  const open = meet.items.filter(i => !isDone(i.status)).length;
+  $("m-name").textContent = meet.name + " · " + open + " " + t("m_open");
+  renderExec();
+  renderPrev();
+  const cols = labels.filter(l => !(hide && isDone(l)));
+  const sinEstado = meet.items.filter(i => !i.status || !labels.includes(i.status));
+  const colHtml = (title, items, key) => `<div class="mcol" data-st="${esc(key)}">
+      <h4>${esc(title)} <i>${items.length}</i></h4>
+      ${items.slice().sort(byDate).map(meetCard).join("") || `<p class="mempty">—</p>`}
+    </div>`;
+  $("m-board").innerHTML =
+    (sinEstado.length ? colHtml(t("m_none"), sinEstado, "") : "") +
+    cols.map(l => colHtml(l, meet.items.filter(i => i.status === l), l)).join("");
+}
+
+function meetCard(i) {
+  const dd = isDone(i.status) ? null : meetDays(i);
+  const cls = dd === null ? "" : dd < 0 ? " over" : dd <= 7 ? " soon" : "";
+  const tipo = i.tipo ? `<span class="mtag">${esc(i.tipo)}</span>` : "";
+  const meta = [i.person, i.date].filter(Boolean).map(esc).join(" · ");
+  return `<div class="mcard${cls}" data-mid="${esc(i.id)}">
+    <div class="mname">${esc(i.name)}</div>
+    ${meta || tipo ? `<div class="mmeta">${tipo}${meta}</div>` : ""}
+    <select data-mk="status" title="${t("m_state")}">${[""].concat(meetLabels()).map(l => `<option value="${esc(l)}" ${l === i.status ? "selected" : ""}>${esc(l || t("m_none"))}</option>`).join("")}</select>
+    ${meet.cols.notes ? `<textarea data-mk="notes" rows="2" placeholder="${t("m_notes")}">${esc(i.notes)}</textarea>` : ""}
+    <button class="chk" data-hist="1">${t("m_hist")}</button>
+    <div class="mhist"></div>
+    <span class="saved"></span>
+  </div>`;
+}
+
+async function meetSave(cardEl, k, val) {
+  const item = meet.items.find(i => i.id === cardEl.dataset.mid);
+  const colId = meet.cols[k];
+  const ind = cardEl.querySelector(".saved");
+  if (!item || item[k] === val) return;
+  if (!colId) { ind.className = "saved err"; ind.textContent = t("nocol"); return; }
+  ind.className = "saved wip"; ind.textContent = t("saving"); pending++;
+  try {
+    await gql(`mutation($b:ID!,$i:ID!,$c:String!,$v:String!){change_simple_column_value(board_id:$b,item_id:$i,column_id:$c,value:$v){id}}`,
+      { b: meetId(), i: item.id, c: colId, v: val });
+    item[k] = val;
+    item.upd = new Date().toISOString();
+    meet.sig = JSON.stringify([meet.name, meet.items]);
+    ind.className = "saved ok"; ind.textContent = t("saved");
+    if (k === "status") setTimeout(renderMeet, 400); // el elemento cambia de columna
+  } catch (e) {
+    ind.className = "saved err"; ind.textContent = t("err"); ind.title = e.message;
+    showMsg(t("e_save") + e.message);
+  } finally { pending--; }
+}
+document.addEventListener("change", ev => {
+  const el = ev.target, k = el.dataset && el.dataset.mk, c = el.closest && el.closest(".mcard");
+  if (k && c) meetSave(c, k, el.value.trim());
+});
+
+// Historial: cada "Cerrar reunión" deja en Monday una nota "[BMR-REU fecha] ..." en cada pendiente abierto.
+// Aquí se leen esas notas para mostrar qué quedó pendiente de la reunión anterior. Es opcional: si falla, no rompe el tablero.
+const REU = /\[BMR-REU (\d{4}-\d{2}-\d{2})\]\s*/;
+async function meetHistLoad() {
+  const cut = Date.now() - 45 * 864e5;
+  const ids = meet.items.filter(i => !isDone(i.status) || !i.upd || new Date(i.upd).getTime() > cut).map(i => i.id);
+  const hist = {};
+  try {
+    for (let k = 0; k < ids.length; k += 50) {
+      const d = await gql(`query($i:[ID!]){items(ids:$i){id updates(limit:5){text_body created_at}}}`, { i: ids.slice(k, k + 50) });
+      (d.items || []).forEach(it => (it.updates || []).forEach(u => {
+        const m = REU.exec(u.text_body || "");
+        if (m && (!hist[it.id] || m[1] > hist[it.id].date)) hist[it.id] = { date: m[1], text: (u.text_body || "").replace(REU, "").trim() };
+      }));
+    }
+    Object.assign(meet, { hist, histLoaded: true, histErr: false });
+  } catch (e) { meet.histErr = true; }
+  if (view === "meet") renderPrev();
+}
+function prevMeeting() {
+  const dates = Object.keys(meet.hist).map(k => meet.hist[k].date).sort();
+  if (!dates.length) return null;
+  const last = dates[dates.length - 1], h = i => meet.hist[i.id];
+  return {
+    date: last,
+    still: meet.items.filter(i => h(i) && !isDone(i.status)),
+    solved: meet.items.filter(i => h(i) && h(i).date === last && isDone(i.status)),
+    fresh: meet.items.filter(i => !h(i) && !isDone(i.status))
+  };
+}
+function renderPrev() {
+  const box = $("m-prev"), head = `<h4>${t("m_prev")}</h4>`;
+  if (meet.histErr) { box.innerHTML = head + `<p class="mhint">${t("m_prev_err")}</p>`; return; }
+  if (!meet.histLoaded) { box.innerHTML = head + `<p class="mhint">${t("m_hist_load")}</p>`; return; }
+  const p = prevMeeting();
+  if (!p) { box.innerHTML = head + `<p class="mhint">${t("m_prev_none")}</p>`; return; }
+  const note = i => { const x = meet.hist[i.id].text; return x.length > 170 ? x.slice(0, 170) + "…" : x; };
+  const sec = (cls, title, list, fn) => list.length ? `<div class="ma ${cls}"><h5>${t(title)} · ${list.length}</h5><ul>${list.slice(0, 10).map(fn).join("")}${list.length > 10 ? `<li>${t("m_more").replace("{n}", list.length - 10)}</li>` : ""}</ul></div>` : "";
+  box.innerHTML = `<h4>${t("m_prev")} · ${esc(p.date)}</h4>` +
+    sec("amb", "m_prev_still", p.still, i => `<li>${esc(meetLine(i))}${meet.hist[i.id].date !== p.date ? ` <small>(${esc(meet.hist[i.id].date)})</small>` : ""}<br><small>${esc(note(i))}</small></li>`) +
+    sec("grn", "m_prev_solved", p.solved, i => `<li>${esc(i.name)}</li>`) +
+    sec("gry", "m_prev_new", p.fresh, i => `<li>${esc(meetLine(i))}</li>`) +
+    (p.still.length || p.solved.length || p.fresh.length ? "" : `<p class="mok">${t("m_ok")}</p>`);
+}
+
+// Cerrar reunión: deja una nota en cada pendiente abierto (queda en el historial del elemento en Monday).
+async function meetClose() {
+  const open = meet.items.filter(i => !isDone(i.status));
+  if (!open.length) return toast(t("m_close_none"));
+  if (!confirm(t("m_close_c").replace("{n}", open.length))) return;
+  const btn = $("m-close"); btn.disabled = true;
+  const hoy = new Date().toLocaleDateString(LANG === "en" ? "en-US" : "es-CO");
+  const iso = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+  let n = 0;
+  try {
+    for (const i of open) {
+      const body = "[BMR-REU " + iso + "] " + t("m_note_h") + " " + hoy + ": " + (i.status || t("m_none")) + (i.person ? " · " + i.person : "") +
+        (i.date ? " · " + t("m_due") + " " + i.date.slice(0, 10) : "") + (i.notes ? "\n" + t("m_notes") + ": " + i.notes : "");
+      await gql(`mutation($i:ID!,$b:String!){create_update(item_id:$i,body:$b){id}}`, { i: i.id, b: body });
+      n++;
+    }
+    toast(t("m_close_ok").replace("{n}", n));
+    await meetLoad(false);
+  } catch (e) { showMsg(t("e_save") + e.message + " (" + n + "/" + open.length + ")"); }
+  finally { btn.disabled = false; }
+}
+
+async function meetHistory(btn) {
+  const cardEl = btn.closest(".mcard"), box = cardEl.querySelector(".mhist");
+  if (box.dataset.open) { box.dataset.open = ""; box.innerHTML = ""; return; }
+  box.dataset.open = "1"; box.textContent = t("m_hist_load");
+  try {
+    const d = await gql(`query($i:[ID!]){items(ids:$i){updates(limit:20){id text_body created_at creator{name}}}}`, { i: [cardEl.dataset.mid] });
+    const ups = (d.items && d.items[0] && d.items[0].updates) || [];
+    box.innerHTML = ups.length ? ups.map(u => `<div class="mh"><b>${esc(new Date(u.created_at).toLocaleDateString(LANG === "en" ? "en-US" : "es-CO"))}</b> ${esc((u.creator && u.creator.name) || "")}\n${esc(u.text_body || "")}</div>`).join("") : t("m_hist_none");
+  } catch (e) { box.textContent = t("e_read") + e.message; box.dataset.open = ""; }
+}
+document.addEventListener("click", ev => { const b = ev.target.closest && ev.target.closest("button[data-hist]"); if (b) meetHistory(b); });
+
+// Recordatorio semanal para el calendario (.ics): cada miércoles, con alarma 15 min antes.
+function icsText() {
+  const d = new Date(); d.setHours(10, 0, 0, 0);
+  d.setDate(d.getDate() + ((MEET_DAY - d.getDay() + 7) % 7));
+  const p2 = n => String(n).padStart(2, "0");
+  const f = x => x.getFullYear() + p2(x.getMonth() + 1) + p2(x.getDate()) + "T" + p2(x.getHours()) + p2(x.getMinutes()) + "00";
+  const end = new Date(d.getTime() + 36e5);
+  const esc2 = s => String(s).replace(/[\\;,]/g, "\\$&").replace(/\n/g, "\\n");
+  const url = /^https?:/.test(location.href) ? location.href.split("#")[0] : "";
+  const desc = t("m_ics_desc") + (url ? "\n" + url : "");
+  return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//BMR//Reuniones//ES", "BEGIN:VEVENT",
+    "UID:bmr-reunion-miercoles@dashboard", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""),
+    "DTSTART:" + f(d), "DTEND:" + f(end), "RRULE:FREQ=WEEKLY;BYDAY=WE",
+    "SUMMARY:" + esc2(t("m_ics_title")), "DESCRIPTION:" + esc2(desc), url ? "URL:" + url : "",
+    "BEGIN:VALARM", "TRIGGER:-PT15M", "ACTION:DISPLAY", "DESCRIPTION:" + esc2(t("m_ics_title")), "END:VALARM",
+    "END:VEVENT", "END:VCALENDAR"].filter(Boolean).join("\r\n");
+}
+function meetIcs() {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([icsText()], { type: "text/calendar" }));
+  a.download = "reunion-miercoles.ics";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast(t("m_ics_ok"));
+}
+
+// Columnas que el panel necesita; si faltan se pueden crear desde el dashboard (con confirmación)
+const missingCols = () => [["date", "date", "m_col_date"], ["notes", "long_text", "m_col_notes"]].filter(c => !meet.cols[c[0]]);
+async function meetSetup() {
+  const miss = missingCols();
+  if (!miss.length || !confirm(t("m_setup_c").replace("{c}", miss.map(c => t(c[2])).join(", ")))) return;
+  try {
+    for (const c of miss) {
+      await gql(`mutation($b:ID!,$t:String!,$y:ColumnType!){create_column(board_id:$b,title:$t,column_type:$y){id}}`,
+        { b: meetId(), t: t(c[2]), y: c[1] });
+    }
+    await meetLoad(false);
+    toast(t("saved"));
+  } catch (e) { showMsg(t("e_save") + e.message); }
+}
+document.addEventListener("click", ev => { if (ev.target && ev.target.id === "m-setup") meetSetup(); });
+
+async function meetAdd() {
+  const name = $("m-new").value.trim();
+  if (!name) return;
+  const btn = $("m-add"); btn.disabled = true;
+  try {
+    const d = await gql(`mutation($b:ID!,$n:String!){create_item(board_id:$b,item_name:$n){id}}`, { b: meetId(), n: name });
+    $("m-new").value = "";
+    await meetLoad(false);
+    if (d && d.create_item) toast(t("saved"));
+  } catch (e) { showMsg(t("e_save") + e.message); }
+  finally { btn.disabled = false; }
 }
 
 function renderEdit() {
@@ -446,7 +847,7 @@ function card(i) {
       <select data-k="status">${STATUSES.map(s => `<option ${s === st ? "selected" : ""}>${s}</option>`).join("")}</select>
       <input class="txt" data-k="mes" list="meses" placeholder="${t("month")}" value="${esc(i.mes)}">
     </div>
-    ${FIELDS.map(f => `<div class="lbl"><label>${f.n} · ${f.label}</label><span class="btns"><button class="lum" data-lum="${f.key}">${t("lum_btn")}</button><button class="chk" data-chk="${f.key}">${t("sp_btn")}</button></span></div><textarea data-k="${f.key}" rows="3">${esc(i[f.key])}</textarea><div class="trv" data-tr="${f.key}"></div><div class="sp" data-sp="${f.key}"></div>`).join("")}
+    ${FIELDS.map(f => `<div class="lbl"><label>${f.n} · ${f.label}</label><span class="btns"><button class="lum" data-lum="${f.key}">${t("lum_btn")}</button><button class="lum" data-lum="${f.key}" data-ai="ica">${t("ica_btn")}</button><button class="chk" data-chk="${f.key}">${t("sp_btn")}</button></span></div><textarea data-k="${f.key}" rows="3">${esc(i[f.key])}</textarea><div class="trv" data-tr="${f.key}"></div><div class="sp" data-sp="${f.key}"></div>`).join("")}
   </div>`;
 }
 
@@ -526,15 +927,15 @@ document.addEventListener("click", ev => {
 // ── Redacción asistida con IA ────────────────────────────────────────────────
 // No hay API: se copia un prompt armado al portapapeles y, según el asistente elegido, se abre su página.
 // "copy" (por defecto) no abre nada, así funciona para quien no tenga acceso a ICA u otro servicio.
-const LUMINI_DEFAULT = "https://us.ica.ibm.com/ica/curatorai/apps/ui/new-chat/6a50021234b0b212859ea73d";
+const ICA_URL = "https://us.ica.ibm.com/ica/assistant-library/detail/821c6a52-67ac-4553-b401-25800b1c9a82?type=ASSISTANT";
 const COPILOT_URL = "https://copilot.microsoft.com/";
 const aiChoice = () => {
   const v = localStorage.getItem("bmr_ai");
-  return ["copy", "lumini", "copilot", "custom"].includes(v) ? v : "copy";
+  return ["copy", "ica", "copilot", "custom"].includes(v) ? v : "copy";
 };
 const aiUrl = () => {
   const v = aiChoice();
-  if (v === "lumini") return (localStorage.getItem("bmr_lum") || "").trim() || LUMINI_DEFAULT;
+  if (v === "ica") return ICA_URL;
   if (v === "copilot") return COPILOT_URL;
   if (v === "custom") {
     const u = (localStorage.getItem("bmr_ai_url") || "").trim();
@@ -557,7 +958,7 @@ async function copyText(s) {
   ta.remove(); return ok;
 }
 
-function luminiPrompt(f, area, mes, notes) {
+function aiPrompt(f, area, mes, notes) {
   return LANG === "en"
     ? `Act as an executive writer. Write the "${f.label}" section of the monthly BMR (Business Monthly Review) report for the area "${area}", month ${mes || "-"}.\nUse a clear, concise executive tone, in short bullet points, in English. Do not invent figures or facts: use only the notes below.\n\nNotes:\n${notes}`
     : `Actúa como redactor ejecutivo. Redacta la sección "${f.label}" del reporte mensual BMR (Business Monthly Review) del área "${area}", mes ${mes || "-"}.\nUsa un tono ejecutivo, claro y conciso, en viñetas cortas, en español. No inventes cifras ni hechos: usa solo las notas siguientes.\n\nNotas:\n${notes}`;
@@ -571,8 +972,8 @@ document.addEventListener("click", async ev => {
   const notes = cardEl.querySelector(`textarea[data-k="${f.key}"]`).value.trim();
   if (!notes) return toast(t("lum_empty"));
   const item = state.items.find(i => i.id === cardEl.dataset.id) || {};
-  const ok = await copyText(luminiPrompt(f, item.name || "", fm(item.mes || ""), notes));
-  const url = aiUrl();
+  const ok = await copyText(aiPrompt(f, item.name || "", fm(item.mes || ""), notes));
+  const url = b.dataset.ai === "ica" ? ICA_URL : aiUrl();
   if (url) window.open(url, "_blank", "noopener");
   toast(ok ? t("lum_ok") : t("lum_manual"));
 });
@@ -815,6 +1216,11 @@ document.querySelectorAll("button.tab").forEach(b => b.onclick = () => {
   document.querySelectorAll("button.tab").forEach(x => x.classList.toggle("on", x === b));
   render();
 });
+$("m-add").onclick = meetAdd;
+$("m-hide").onchange = renderMeet;
+$("m-close").onclick = meetClose;
+$("m-ics").onclick = meetIcs;
+$("m-copy").onclick = async () => toast(await copyText(meetSummary()) ? t("m_copied") : t("lum_manual"));
 $("f-mes").onchange = render;
 
 function applyLang() {
@@ -832,7 +1238,7 @@ $("b-lang").onclick = () => {
   localStorage.setItem("bmr_lang", LANG);
   applyLang();
 };
-$("b-refresh").onclick = () => load(false);
+$("b-refresh").onclick = () => view === "meet" ? meetLoad(false) : load(false);
 $("b-cfg").onclick = showConfig;
 $("b-pptx").onclick = exportPptx;
 $("b-print").onclick = () => window.print();
@@ -853,8 +1259,9 @@ $("c-save").onclick = () => {
   const t = $("c-token").value.trim();
   if (t) localStorage.setItem("bmr_token", t);
   localStorage.setItem("bmr_board", $("c-board").value.trim() || DEFAULT_BOARD);
+  localStorage.setItem("bmr_meet", $("c-meet").value.trim());
+  meet.loaded = false; meet.sig = ""; meet.histLoaded = false;
   localStorage.setItem("bmr_lt", $("c-lt").value.trim());
-  localStorage.setItem("bmr_lum", $("c-lum").value.trim());
   localStorage.setItem("bmr_ai", $("c-ai").value);
   localStorage.setItem("bmr_ai_url", $("c-ai-url").value.trim());
   $("c-token").value = "";
@@ -864,13 +1271,14 @@ $("c-save").onclick = () => {
 // Actualización en línea: relee Monday cada 60 s si nadie está escribiendo
 setInterval(() => {
   const a = document.activeElement;
-  if (pending || (a && a.closest && a.closest(".card"))) return;
-  load(true);
+  if (pending || (a && a.closest && a.closest(".card, .mcard, .mbar"))) return;
+  if (view === "meet") meetLoad(true); else { load(true); if (token()) meetLoad(true); }
 }, 60000);
 
 document.body.insertAdjacentHTML("beforeend", `<datalist id="meses">${MESES.map(m => `<option value="${m}">`).join("")}</datalist>`);
 applyLang();
 load(false);
+if (token()) meetLoad(true); // carga en segundo plano para mostrar la insignia de alertas
 </script>
 </body>
 </html>
